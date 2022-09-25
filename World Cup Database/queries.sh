@@ -39,3 +39,4 @@ echo "$($PSQL "SELECT g.year, t.name from teams AS t FULL JOIN games AS g ON t.t
 
 echo -e "\nList of teams that start with 'Co':"
 echo "$($PSQL "SELECT name FROM teams WHERE name LIKE 'Co%'")"
+

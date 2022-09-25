@@ -10,7 +10,6 @@ fi
 # Do not change code above this line. Use the PSQL variable above to query your database.
 
 echo $($PSQL "truncate table games, teams")
-
 cat games.csv | while IFS="," read YEAR ROUND WINNER OPPONENT WINNER_GOALS OPPONENT_GOALS
 do
   # winner and opponent are teams
@@ -51,6 +50,5 @@ do
     # insert games
     INSERT_GAME_RESULT=$($PSQL "insert into games (year, round, winner_id, opponent_id, winner_goals, opponent_goals) values ($YEAR, '$ROUND', $WINNER_ID, $OPPONENT_ID, $WINNER_GOALS, $OPPONENT_GOALS)")
     echo Inserted game $WINNER vs $OPPONENT, $YEAR
-
   fi  
 done
