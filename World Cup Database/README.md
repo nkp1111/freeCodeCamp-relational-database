@@ -1,2 +1,2 @@
-This is 2 project for certificaton of **Relational Database**.
+This is 2nd project for certificaton of **Relational Database**.
 
