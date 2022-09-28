@@ -12,10 +12,12 @@ MAIN_MENU(){
   fi
 
   echo -e "\nWelcome to nkp1111 salon, How can i help you"
-  SERVICES
+    
+  SERVICES 
 }
 
 SERVICES(){
+
   # get services
   SERVICES=$($PSQL "SELECT service_id, name FROM services")
 
@@ -33,7 +35,7 @@ SERVICES(){
   if [[ ! $SERVICE_ID_SELECTED =~ ^[0-9]+$ ]]
   then
     # send to main menu
-    MAIN_MENU "Please provide a proper service_id from the list"
+    MAIN_MENU "I could not find that service. What would you like today?"
   else
     # book appointment for the service
     # get customer info
@@ -58,17 +60,30 @@ SERVICES(){
       # fi
     fi
 
+    # get service name
+    SERVICE_NAME=$($PSQL "SELECT name FROM services WHERE service_id = $SERVICE_ID_SELECTED")
+    
+    # get service time
     echo "What time would you like your $SERVICE_NAME, $CUSTOMER_NAME?"
     read SERVICE_TIME   
-  fi
 
+    # get customer_id
+    CUSTOMER_ID=$($PSQL "SELECT customer_id FROM customers WHERE name = '$CUSTOMER_NAME'")
+    # insert appointment
+    INSERT_INTO_APPOINTMENT=$($PSQL "INSERT INTO appointments (customer_id, service_id, time) VALUES ('$CUSTOMER_ID', $SERVICE_ID_SELECTED, '$SERVICE_TIME')")
+    
+    if [[ $INSERT_INTO_APPOINTMENT == 'INSERT 0 1' ]]
+    then
+      # send to main menu
+      echo -e "\nI have put you down for a $SERVICE_NAME at $SERVICE_TIME, $CUSTOMER_NAME."
+      EXIT
+    fi
+  fi
 }
 
-# APPOINTMENT(){
-
-
-   
-# }
+EXIT(){
+  echo -e "\nThank you for visiting. Please come again.\n"
+}
 
 MAIN_MENU
 
