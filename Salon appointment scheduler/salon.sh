@@ -11,24 +11,64 @@ MAIN_MENU(){
     echo $1
   fi
 
-  echo "Welcome to nkp1111 salon, How can i help you"
-
+  echo -e "\nWelcome to nkp1111 salon, How can i help you"
   SERVICES
 }
 
 SERVICES(){
   # get services
-  SERVICES=$($PSQL "SELECT * FROM services")
+  SERVICES=$($PSQL "SELECT service_id, name FROM services")
+
   # display services
-  echo "$SERVICES" | while read SERVICE_ID BAR SERVICE
+  echo "$SERVICES" | while IFS="|" read SERVICE_ID SERVICE_NAME
   do 
-    echo $SERVICE_ID 
+    echo "$SERVICE_ID) $SERVICE_NAME"
   done
+
   # ask for service id 
+  echo -e "\nWhich service would you like to book:"
+  read SERVICE_ID_SELECTED
+
   # if not service id
-  # send to main menu
-  # book appointment for the service
+  if [[ ! $SERVICE_ID_SELECTED =~ ^[0-9]+$ ]]
+  then
+    # send to main menu
+    MAIN_MENU "Please provide a proper service_id from the list"
+  else
+    # book appointment for the service
+    # get customer info
+    echo -e "\nWhat's your phone number?"
+    read CUSTOMER_PHONE
+
+    # check if customer exist
+    CUSTOMER_NAME=$($PSQL "SELECT name FROM customers WHERE phone = '$CUSTOMER_PHONE'")
+    
+    # if not exist 
+    if [[ -z $CUSTOMER_NAME ]]
+    then
+      # create new customer
+      echo "I don't have a record for that phone number, what's your name?"
+      read CUSTOMER_NAME
+
+      # insert new customer
+      INSERT_CUSTOMER_RESULT=$($PSQL "INSERT INTO customers (name, phone) VALUES ('$CUSTOMER_NAME', '$CUSTOMER_PHONE')")
+      # if [[ $INSERT_CUSTOMER_RESULT == 'INSERT 0 1' ]]
+      # then
+      #   echo "$CUSTOMER_NAME"
+      # fi
+    fi
+
+    echo "What time would you like your $SERVICE_NAME, $CUSTOMER_NAME?"
+    read SERVICE_TIME   
+  fi
+
 }
+
+# APPOINTMENT(){
+
+
+   
+# }
 
 MAIN_MENU
 
