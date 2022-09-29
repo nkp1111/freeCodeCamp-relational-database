@@ -118,6 +118,14 @@ ALTER TABLE ONLY public.elements
 
 
 --
+-- Name: elements elements_symbol_name_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
+--
+
+ALTER TABLE ONLY public.elements
+    ADD CONSTRAINT elements_symbol_name_key UNIQUE (symbol, name);
+
+
+--
 -- Name: properties properties_atomic_number_key; Type: CONSTRAINT; Schema: public; Owner: freecodecamp
 --
 
