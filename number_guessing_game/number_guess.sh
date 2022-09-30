@@ -21,3 +21,11 @@ else
     echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
   done
 fi
+
+# game start
+# until guess is right
+# ask for guess
+# if guess is not integer
+# if guess is higher
+# if guess is lower
+# if guess is correct
