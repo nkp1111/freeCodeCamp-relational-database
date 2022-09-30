@@ -9,11 +9,18 @@ else
   if [[ $1 =~ ^[0-9]+$ ]]
   then
     # atomic_number
-    VALUE=$($PSQL "select * from elements where atomic_number = $1")
-    echo $VALUE
+    PROPERTY=$($PSQL "SELECT * FROM properties INNER JOIN elements USING(atomic_number) WHERE atomic_number = $1")
+
+    echo $PROPERTY | while IFS="|" read ATOMIC_NUMBER TYPE ATOMIC_MASS MELTING_POINT BOILING_POINT TYPE_ID SYMBOL NAME
+    do
+      echo $ATOMIC_NUMBER $NAME
+    done
   else
     # element name
-    VAL=$($PSQL "select * from elements where name ilike '$1%' limit 1")
-    echo $VAL
+    VAL=$($PSQL "SELECT * FROM properties INNER JOIN elements WHERE name ILIKE '$1%' LIMIT 1")
+    echo $PROPERTY | while IFS="|" read ATOMIC_NUMBER TYPE ATOMIC_MASS MELTING_POINT BOILING_POINT TYPE_ID SYMBOL NAME
+    do
+      echo $ATOMIC_NUMBER $NAME
+    done
   fi
 fi
