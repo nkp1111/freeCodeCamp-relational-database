@@ -2,15 +2,18 @@
 
 PSQL="psql --username=freecodecamp --dbname=periodic_table -t --no-align -c"
 
-echo "Please provide an element as an argument."
-
-if [[ $1 =~ ^[0-9]+$ ]]
+if [[ -z $1 ]]
 then
-  # atomic number
-  ELEMENT_DATA=$($PSQL "select * from elements where atomic_number = $1")
-  echo $ELEMENT_DATA
+  echo "Please provide an element as an argument."
 else
-  # element name
-  ELEMENT_DATA=$($PSQL "select * from elements where name ilike '$1%' limit 1")
-  echo $ELEMENT_DATA
+  if [[ $1 =~ ^[0-9]+$ ]]
+  then
+    # atomic_number
+    VALUE=$($PSQL "select * from elements where atomic_number = $1")
+    echo $VALUE
+  else
+    # element name
+    VAL=$($PSQL "select * from elements where name ilike '$1%' limit 1")
+    echo $VAL
+  fi
 fi
