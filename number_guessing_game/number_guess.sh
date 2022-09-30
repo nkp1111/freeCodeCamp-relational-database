@@ -2,7 +2,7 @@
 
 PSQL="psql --username=freecodecamp --dbname=number_guess -t --no-align -c"
 
-RANDOM_NUMBER=$RANDOM
+RANDOM_NUMBER=$(( $RANDOM % 1000 + 1 ))
 
 echo "Enter your username:"
 read USERNAME
@@ -23,6 +23,7 @@ else
 fi
 
 # game start
+echo "Guess the secret number between 1 and 1000:"
 # until guess is right
 # ask for guess
 # if guess is not integer
