@@ -25,14 +25,27 @@ fi
 # game start
 echo "Guess the secret number between 1 and 1000:"
 read GUESS
+
 # until guess is right
 until [[ $GUESS == $RANDOM_NUMBER ]]
 do
   # if guess is not integer
-  
-  # if guess is higher
-  # if guess is lower
+  if [[ ! $GUESS =~ ^[0-9]+$ ]]
+  then
+    echo "That is not an integer, guess again:"
+  else
+    # if guess is lower
+    if (( $GUESS > $RANDOM_NUMBER ))
+    then
+      echo "It's lower than that, guess again:"
+    # if guess is higher
+    elif (( $GUESS < $RANDOM_NUMBER ))
+    then
+      echo "It's higher than that, guess again:"  
+    fi
+  fi
   # ask for guess
   read GUESS
-  # if guess is correct
 done
+# if guess is correct
+echo "You guessed it in <number_of_guesses> tries. The secret number was <secret_number>. Nice job!"
