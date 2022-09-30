@@ -117,6 +117,9 @@ INSERT INTO public.properties VALUES (1000, 'metalloid', 1.000000, 10, 100);
 -- Data for Name: types; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
+INSERT INTO public.types VALUES (1, 'metal');
+INSERT INTO public.types VALUES (2, 'nonmetal');
+INSERT INTO public.types VALUES (3, 'metalloid');
 
 
 --
