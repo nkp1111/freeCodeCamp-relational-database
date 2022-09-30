@@ -7,6 +7,9 @@ RANDOM_NUMBER=$(( $RANDOM % 1000 + 1 ))
 echo "Enter your username:"
 read USERNAME
 
+GAME_PLAYED=0
+BEST_GAME=0
+
 USER_DATA=$($PSQL "SELECT * FROM number_guess WHERE username = '$USERNAME'")
 
 # check if user exist
@@ -14,13 +17,13 @@ if [[ -z $USER_DATA ]]
 then
   # if no user exist
   echo "Welcome, $USERNAME! It looks like this is your first time here."
-  INSERT_USER_RESULT=$($PSQL "INSERT INTO number_guess (username) VALUES ('$USERNAME')")
-
 else
   # if user exist
   echo $USER_DATA | while IFS="|" read ID USERNAME GAMES_PLAYED BEST_GAME
   do
     echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
+    BEST_GAME=$BEST_GAME
+    GAMES_PLAYED=$GAMES_PLAYED
   done
 fi
 
@@ -28,7 +31,7 @@ fi
 echo "Guess the secret number between 1 and 1000:"
 read GUESS
 echo "$RANDOM_NUMBER"
-NUMBER_OF_GUESS=0
+NUMBER_OF_GUESS=1
 
 # until guess is right
 until [[ $GUESS == $RANDOM_NUMBER ]]
@@ -53,6 +56,10 @@ do
   # ask for guess
   read GUESS
 done
+
+(( GAME_PLAYED++ ))
+
+INSERT_USER_RESULT=$($PSQL "INSERT INTO number_guess (username, games_played, best_game) VALUES ('$USERNAME', $GAME_PLAYED)")
 
 # if guess is correct
 echo "You guessed it in $NUMBER_OF_GUESS tries. The secret number was $RANDOM_NUMBER. Nice job!"
