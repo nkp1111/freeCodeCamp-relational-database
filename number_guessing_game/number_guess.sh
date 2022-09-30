@@ -11,7 +11,7 @@ USER_DATA=$($PSQL "SELECT * FROM number_guess WHERE username = '$USERNAME'")
 echo $USER_DATA 
 
 # check if user exist
-if [[ -z USER_DATA ]]
+if [[ -z $USER_DATA ]]
 then
   # if no user exist
   echo "Welcome, $USERNAME! It looks like this is your first time here."
