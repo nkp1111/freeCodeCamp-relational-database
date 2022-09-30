@@ -10,10 +10,12 @@ read USERNAME
 USER_DATA=$($PSQL "SELECT * FROM number_guess WHERE username = '$USERNAME'")
 
 # check if user exist
-if [[ -z $USER_DATA  ]]
+if [[ -z $USER_DATA ]]
 then
   # if no user exist
   echo "Welcome, $USERNAME! It looks like this is your first time here."
+  INSERT_USER_RESULT=$($PSQL "INSERT INTO number_guess (username) VALUES ('$USERNAME')")
+
 else
   # if user exist
   echo $USER_DATA | while IFS="|" read ID USERNAME GAMES_PLAYED BEST_GAME
@@ -51,5 +53,6 @@ do
   # ask for guess
   read GUESS
 done
+
 # if guess is correct
 echo "You guessed it in $NUMBER_OF_GUESS tries. The secret number was $RANDOM_NUMBER. Nice job!"
