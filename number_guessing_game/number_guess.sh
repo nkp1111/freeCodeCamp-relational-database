@@ -68,7 +68,9 @@ else
   BEST_GAME=$NUMBER_OF_GUESS
 fi
 
-INSERT_USER_RESULT=$($PSQL "INSERT INTO number_guess (username, games_played, best_game) VALUES ('$USERNAME', $GAME_PLAYED, $BEST_GAME)")
-
 # if guess is correct
-echo "You guessed it in $NUMBER_OF_GUESS tries. The secret number was $RANDOM_NUMBER. Nice job!"
+if [[ $GUESS == $RANDOM_NUMBER ]]
+then
+  INSERT_USER_RESULT=$($PSQL "INSERT INTO number_guess (username, games_played, best_game) VALUES ('$USERNAME', $GAME_PLAYED, $BEST_GAME)")
+  echo "You guessed it in $NUMBER_OF_GUESS tries. The secret number was $RANDOM_NUMBER. Nice job!"
+fi
